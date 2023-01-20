@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../helpers/shared_prefs.dart';
-import '../screens/review_journey.dart';
+import '../screens/bustop_path.dart';
 
 // ignore: non_constant_identifier_names
 Widget JourneyReviewBottomSheet(context, sourceLatLng, destLatLng,
@@ -31,7 +31,7 @@ Widget JourneyReviewBottomSheet(context, sourceLatLng, destLatLng,
                   tileColor: Colors.grey[200],
                   leading: const CircleAvatar(
                       radius: 25, child: Icon(Icons.directions_walk_outlined)),
-                  title: const Text('Journey Review',
+                  title: const Text('Details',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   subtitle: Column(
@@ -44,11 +44,12 @@ Widget JourneyReviewBottomSheet(context, sourceLatLng, destLatLng,
 
               ElevatedButton(
                 onPressed: () async {
+                  // print(modifiedResponse);
                   // ignore: use_build_context_synchronously
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ReviewJourney(
+                      builder: (_) => BusStopPath(
                         modifiedResponse: modifiedResponse,
                         sourceLatLng: sourceLatLng,
                         destLatLng: destLatLng,
@@ -64,7 +65,7 @@ Widget JourneyReviewBottomSheet(context, sourceLatLng, destLatLng,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(Icons.directions_walk_outlined),
-                    Text('Review Journey'),
+                    Text('Path to bus stop'),
                   ],
                 ),
               ),

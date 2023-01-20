@@ -1,13 +1,10 @@
 //access token is required
 
-import 'dart:async';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
-import 'package:yatraa/providers/driver_location.dart';
 
+import '../providers/driver_location.dart';
 import '../helpers/mapbox_handler.dart';
 import '../helpers/shared_prefs.dart';
 import '../helpers/commons.dart';
@@ -38,7 +35,6 @@ class _ReviewRideState extends State<ReviewRide> {
   late String dropOffTime;
   late Map geometry;
 
-  final Dio _dio = Dio();
   String url = "$serverUrl/location/create/2/";
 
   @override
@@ -81,7 +77,6 @@ class _ReviewRideState extends State<ReviewRide> {
     }
 
     for (CameraPosition coordinates in driverLocationCoordinates) {
-      print(coordinates.target);
       await controller.addSymbol(
         SymbolOptions(
           geometry: coordinates.target,
@@ -96,7 +91,6 @@ class _ReviewRideState extends State<ReviewRide> {
   Widget build(BuildContext context) {
     final busStopLocationData = Provider.of<BusStopLocation>(context);
     final busStopLocation = busStopLocationData.locations;
-
     busStopLocationCoordinates = List<CameraPosition>.generate(
       busStopLocation.length,
       (index) => CameraPosition(

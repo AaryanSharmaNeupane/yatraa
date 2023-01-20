@@ -51,7 +51,6 @@ flutter:
     - assets/images/logo_.png
     - assets/images/driver.jpg
     - assets/images/passenger.jpg
-    - assets/icon/
     - assets/images/marker.png
     - assets/images/bus.png
     - assets/images/bus-stop.png

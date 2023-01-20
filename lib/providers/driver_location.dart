@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
+
 import '../main.dart';
 
 class DriverLocation with ChangeNotifier {
@@ -35,19 +34,17 @@ class DriverLocation with ChangeNotifier {
 
   void addLocation() async {
     var response = await Dio().get('$serverUrl/location/3/live/');
-    // print(response);
+
     var parsedResponse = {
-      // "id": response.data['user'].toString(),
       "latitude": response.data[0]['lat'],
       "longitude": response.data[0]['lon'],
     };
-    print(parsedResponse);
+    // print(parsedResponse);
     _locations.add(parsedResponse);
     Timer.periodic(
       const Duration(seconds: 5),
       (Timer t) async {
         var response = await Dio().get('$serverUrl/location/3/live/');
-        // print(response);
         updateLocation(response.data[0]['lat'], response.data[0]['lon']);
       },
     );

@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/bustop_path.dart';
 import '../widgets/journey_review_bottom_sheet.dart';
 import '../helpers/commons.dart';
 import '../providers/bus_stop_location.dart';
@@ -28,15 +30,19 @@ class _PassengerScreenState extends State<PassengerScreen> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   late List<CameraPosition> busStopLocationCoordinates;
-
   late String distance;
   late String dropOffTime;
   late Map geometry;
+  final Dio _dio = Dio();
+  String url = "$serverUrl/location/busstop/";
 
   @override
   void initState() {
     //Set initial camera position and current address
-    _initialCameraPosition = CameraPosition(target: currentLocation, zoom: 14);
+    _initialCameraPosition = CameraPosition(
+      target: currentLocation,
+      zoom: 14,
+    );
     currentAddress = getCurrentAddressFromSharedPrefs();
     super.initState();
   }
@@ -67,7 +73,6 @@ class _PassengerScreenState extends State<PassengerScreen> {
     LatLng destinationLatLng = symbol.options.geometry!;
     final destAddress =
         await getReverseGeocodingforDestination(destinationLatLng);
-
     Map modifiedResponse =
         await getDirectionsAPIResponse(sourceLatLng, destinationLatLng);
     distance = (modifiedResponse['distance'] / 1000).toStringAsFixed(1);
@@ -111,15 +116,36 @@ class _PassengerScreenState extends State<PassengerScreen> {
                     style: const TextStyle(color: Colors.indigo)),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(PrepareRide.routeName);
+                  onPressed: () async {
+                    var response = await _dio.post(Uri.parse(url).toString(),
+                        data:
+                            "{\"lon\":${currentLocation.latitude},\"lat\":${currentLocation.longitude}}");
+
+                    Map getModifiedResponse = await getDirectionsAPIResponse(
+                        currentLocation,
+                        LatLng(response.data['lat'], response.data['lon']));
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BusStopPath(
+                          modifiedResponse: getModifiedResponse,
+                          sourceLatLng: currentLocation,
+                          destLatLng: LatLng(
+                              response.data['lat'], response.data['lon']),
+                          sourceAddress: currentAddress,
+                          destAddress: response.data['address'],
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(20)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Text('Where do you wanna go today?'),
+                      Text('Recommend Nearest Bus Stop'),
                     ],
                   ),
                 ),
@@ -133,8 +159,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final busStopLocationData = Provider.of<BusStopLocation>(context);
-    final busStopLocation = busStopLocationData.locations;
+    final busStopLocation = Provider.of<BusStopLocation>(context).locations;
 
     busStopLocationCoordinates = List<CameraPosition>.generate(
       busStopLocation.length,
@@ -172,6 +197,19 @@ class _PassengerScreenState extends State<PassengerScreen> {
                       CameraUpdate.newCameraPosition(_initialCameraPosition));
                 },
                 child: const Icon(Icons.my_location),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 5,
+            bottom: 250,
+            child: SizedBox(
+              height: 35,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(PrepareRide.routeName);
+                },
+                child: const Icon(Icons.search),
               ),
             ),
           ),

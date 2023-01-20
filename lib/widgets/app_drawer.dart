@@ -70,7 +70,6 @@ class _AppDrawerState extends State<AppDrawer> {
             height: 170,
             child: buildDrawerHeader(),
           ),
-
           AnimatedToggleSwitch<bool>.dual(
             current: isDriverMode,
             first: false,
@@ -145,23 +144,6 @@ class _AppDrawerState extends State<AppDrawer> {
             child: const Text("Edit Form"),
           ),
           const Divider(),
-          TextButton(
-            onPressed: () {},
-            child: const Text("Sign Out"),
-          ),
-
-          // ElevatedButton(
-          //     onPressed: () async {
-          //       var response =
-          //           await Dio().get('http://127.0.0.1:8000/location/7');
-          //       var parsedResponse = {
-          //         "id": response.data['id'],
-          //         "latitude": response.data['lat'],
-          //         "longitude": response.data['lon'],
-          //       };
-          //       print(parsedResponse);
-          //     },
-          //     child: Container())
         ],
       ),
     );

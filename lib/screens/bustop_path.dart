@@ -2,19 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:yatraa/screens/prepare_ride.dart';
 
 import '../screens/turn_by_turn.dart';
 import '../helpers/mapbox_handler.dart';
 import '../helpers/commons.dart';
 import '../main.dart';
 
-class ReviewJourney extends StatefulWidget {
+class BusStopPath extends StatefulWidget {
   final Map modifiedResponse;
   final LatLng sourceLatLng;
   final LatLng destLatLng;
   final String sourceAddress;
   final String destAddress;
-  const ReviewJourney({
+  const BusStopPath({
     Key? key,
     required this.modifiedResponse,
     required this.sourceLatLng,
@@ -24,10 +25,10 @@ class ReviewJourney extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ReviewJourney> createState() => _ReviewRideState();
+  State<BusStopPath> createState() => _ReviewRideState();
 }
 
-class _ReviewRideState extends State<ReviewJourney> {
+class _ReviewRideState extends State<BusStopPath> {
   // Mapbox Maps SDK related
   final List<CameraPosition> _kTripEndPoints = [];
   late MapboxMapController controller;
@@ -45,7 +46,7 @@ class _ReviewRideState extends State<ReviewJourney> {
     // initialise initialCameraPosition, address and trip end points
     _initialCameraPosition = CameraPosition(
       target: getCenterCoordinatesForPolyline(geometry),
-      zoom: 15,
+      zoom: 14,
     );
     super.initState();
   }
@@ -62,12 +63,9 @@ class _ReviewRideState extends State<ReviewJourney> {
 
   _onStyleLoadedCallback() async {
     for (int i = 0; i < _kTripEndPoints.length; i++) {
-      String iconImage = i == 0 ? 'circle' : 'square';
       await controller.addSymbol(
         SymbolOptions(
           geometry: _kTripEndPoints[i].target,
-          iconSize: 0.1,
-          iconImage: "assets/icon/$iconImage.png",
         ),
       );
     }
@@ -111,7 +109,7 @@ class _ReviewRideState extends State<ReviewJourney> {
               Navigator.of(context).pop();
             },
             icon: const Icon(Icons.arrow_back)),
-        title: const Text('Review Journey'),
+        title: const Text('Path for bus stop'),
       ),
       body: SafeArea(
         child: Stack(
@@ -152,7 +150,7 @@ class _ReviewRideState extends State<ReviewJourney> {
                               leading: const CircleAvatar(
                                   radius: 25,
                                   child: Icon(Icons.directions_walk_outlined)),
-                              title: const Text('Journey Review',
+                              title: const Text('Details',
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold)),
@@ -166,24 +164,38 @@ class _ReviewRideState extends State<ReviewJourney> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => TurnByTurn(
-                                        sourceLatLng: widget.sourceLatLng,
-                                        destLatLng: widget.destLatLng),
-                                  ));
+                              Navigator.of(context)
+                                  .pushNamed(PrepareRide.routeName);
                             },
                             style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.all(20)),
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
-                                  Text('Start your journey now'),
+                                  Text('Search your destination'),
                                 ]),
                           ),
                         ]),
                   ),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 5,
+              bottom: 230,
+              child: SizedBox(
+                height: 44,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TurnByTurn(
+                              sourceLatLng: widget.sourceLatLng,
+                              destLatLng: widget.destLatLng),
+                        ));
+                  },
+                  child: const Icon(Icons.directions),
                 ),
               ),
             ),

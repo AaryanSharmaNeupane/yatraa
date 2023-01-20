@@ -9,8 +9,6 @@ import '../helpers/shared_prefs.dart';
 import '../providers/driver_location.dart';
 import '../screens/review_ride.dart';
 
-//import '../screens/review_ride.dart';
-
 Widget reviewRideFaButton(BuildContext context) {
   return FloatingActionButton.extended(
       icon: const Icon(Icons.airline_seat_recline_extra_sharp),
@@ -25,14 +23,15 @@ Widget reviewRideFaButton(BuildContext context) {
 
         // ignore: use_build_context_synchronously
         Provider.of<DriverLocation>(context, listen: false).addLocation();
+        var timer = Timer.periodic(
+            const Duration(seconds: 5), (Timer t) => CircularProgressIndicator);
+
         // ignore: use_build_context_synchronously
-        Timer(const Duration(seconds: 5), () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) =>
-                      ReviewRide(modifiedResponse: modifiedResponse)));
-        });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) =>
+                    ReviewRide(modifiedResponse: modifiedResponse)));
       },
       label: const Text('Review Ride'));
 }

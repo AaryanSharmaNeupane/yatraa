@@ -41,9 +41,9 @@ class _ImageInputState extends State<ImageInput> {
     return Row(
       children: [
         GestureDetector(
-          onTap: () {
-            showImageViewer(context, Image.file(_storedImage!).image);
-          },
+          // onTap: () {
+          //   showImageViewer(context, Image.file(_storedImage!).image);
+          // },
           child: Container(
             width: 150,
             height: 150,
@@ -79,19 +79,19 @@ class _ImageInputState extends State<ImageInput> {
           child: Column(
             children: [
               GestureDetector(
-                onTap: () {
-                  showImageViewer(
-                      context,
-                      widget.isBlueBook
-                          ? Image.asset(
-                              "assets/images/bluebook.jpg",
-                              fit: BoxFit.cover,
-                            ).image
-                          : Image.asset(
-                              "assets/images/liscense.jpg",
-                              fit: BoxFit.cover,
-                            ).image);
-                },
+                // onTap: () {
+                //   showImageViewer(
+                //       context,
+                //       widget.isBlueBook
+                //           ? Image.asset(
+                //               "assets/images/bluebook.jpg",
+                //               fit: BoxFit.cover,
+                //             ).image
+                //           : Image.asset(
+                //               "assets/images/liscense.jpg",
+                //               fit: BoxFit.cover,
+                //             ).image);
+                // },
                 child: Container(
                   width: 100,
                   height: 100,
