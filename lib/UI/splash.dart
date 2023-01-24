@@ -24,10 +24,7 @@ class _SplashState extends State<Splash> {
 
   void initializeLocationAndSave() async {
     bool firstRun = await IsFirstRun.isFirstRun();
-    //First time running the app
-    // bool firstCall = await IsFirstRun.isFirstCall();
 
-    // Ensure all permissions are collected for Locations
     Location location = Location();
     bool? serviceEnabled;
     PermissionStatus? permissionGranted;
@@ -42,16 +39,13 @@ class _SplashState extends State<Splash> {
       permissionGranted = await location.requestPermission();
     }
 
-    // // Get the current user location
     LocationData locationData = await location.getLocation();
     LatLng currentLocation =
         LatLng(locationData.latitude!, locationData.longitude!);
 
-    // // Get the current user address
     String currentAddress =
         (await getParsedReverseGeocoding(currentLocation))['place'];
 
-    // // Store the user location in sharedPreferences
     sharedPreferences.setDouble('latitude', locationData.latitude!);
     sharedPreferences.setDouble('longitude', locationData.longitude!);
     sharedPreferences.setString('current-address', currentAddress);
