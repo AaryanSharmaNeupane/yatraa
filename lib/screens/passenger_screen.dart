@@ -120,10 +120,15 @@ class _PassengerScreenState extends State<PassengerScreen> {
                     var response = await _dio.post(Uri.parse(url).toString(),
                         data:
                             "{\"lon\":${currentLocation.latitude},\"lat\":${currentLocation.longitude}}");
+                    // print(currentLocation.latitude);
+                    // print(currentLocation.longitude);
 
                     Map getModifiedResponse = await getDirectionsAPIResponse(
                         currentLocation,
                         LatLng(response.data['lat'], response.data['lon']));
+                    // print(currentLocation.latitude);
+                    // print(currentLocation.longitude);
+                    // print(LatLng(response.data['lat'], response.data['lon']));
 
                     // ignore: use_build_context_synchronously
                     Navigator.push(
@@ -132,8 +137,9 @@ class _PassengerScreenState extends State<PassengerScreen> {
                         builder: (_) => BusStopPath(
                           modifiedResponse: getModifiedResponse,
                           sourceLatLng: currentLocation,
-                          destLatLng: LatLng(
-                              response.data['lat'], response.data['lon']),
+                          // destLatLng: LatLng(
+                          //     response.data['lat'], response.data['lon']),
+                          destLatLng: LatLng(27.6595694, 85.3245348),
                           sourceAddress: currentAddress,
                           destAddress: response.data['address'],
                         ),
