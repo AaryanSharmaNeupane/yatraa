@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:yatraa/screens/prepare_ride.dart';
+import 'package:provider/provider.dart';
 
-import '../screens/turn_by_turn.dart';
+import '../screens/prepare_ride.dart';
+import '../providers/bus_stop_location.dart';
+import 'navigation.dart';
 import '../helpers/mapbox_handler.dart';
 import '../helpers/commons.dart';
 import '../main.dart';
@@ -29,21 +31,18 @@ class BusStopPath extends StatefulWidget {
 }
 
 class _ReviewRideState extends State<BusStopPath> {
-  // Mapbox Maps SDK related
   final List<CameraPosition> _kTripEndPoints = [];
   late MapboxMapController controller;
   late CameraPosition _initialCameraPosition;
 
-  // Directions API response related
   late String distance;
   late String dropOffTime;
   late Map geometry;
 
+  late List<CameraPosition> busStopLocationCoordinates;
   @override
   void initState() {
-    // initialise distance, dropOffTime, geometry
     _initialiseDirectionsResponse();
-    // initialise initialCameraPosition, address and trip end points
     _initialCameraPosition = CameraPosition(
       target: getCenterCoordinatesForPolyline(geometry),
       zoom: 14,
@@ -62,6 +61,15 @@ class _ReviewRideState extends State<BusStopPath> {
   }
 
   _onStyleLoadedCallback() async {
+    for (CameraPosition coordinates in busStopLocationCoordinates) {
+      await controller.addSymbol(
+        SymbolOptions(
+          geometry: coordinates.target,
+          iconSize: 1.5,
+          iconImage: "assets/images/bus-stop.png",
+        ),
+      );
+    }
     for (int i = 0; i < _kTripEndPoints.length; i++) {
       await controller.addSymbol(
         SymbolOptions(
@@ -73,7 +81,6 @@ class _ReviewRideState extends State<BusStopPath> {
   }
 
   _addSourceAndLineLayer() async {
-    // Create a polyLine between source and destination
     final fills = {
       "type": "FeatureCollection",
       "features": [
@@ -86,7 +93,6 @@ class _ReviewRideState extends State<BusStopPath> {
       ],
     };
 
-    // Add new source and lineLayer
     await controller.addSource("fills", GeojsonSourceProperties(data: fills));
     await controller.addLineLayer(
       "fills",
@@ -102,6 +108,16 @@ class _ReviewRideState extends State<BusStopPath> {
 
   @override
   Widget build(BuildContext context) {
+    final busStopLocation = Provider.of<BusStopLocation>(context).locations;
+
+    busStopLocationCoordinates = List<CameraPosition>.generate(
+      busStopLocation.length,
+      (index) => CameraPosition(
+        target: LatLng(busStopLocation[index]['latitude'],
+            busStopLocation[index]['longitude']),
+        zoom: 15,
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -190,7 +206,7 @@ class _ReviewRideState extends State<BusStopPath> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => TurnByTurn(
+                          builder: (_) => Navigation(
                               sourceLatLng: widget.sourceLatLng,
                               destLatLng: widget.destLatLng),
                         ));

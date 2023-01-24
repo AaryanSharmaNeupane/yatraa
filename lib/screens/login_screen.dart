@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yatraa/screens/sign_up_screen.dart';
+
+import '../screens/home.dart';
+import '../screens/sign_up_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -84,10 +86,12 @@ class _LoginState extends State<LoginScreen> {
                             password = passwordController.text;
                           },
                         );
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, Home.routeName, (route) => false);
                       }
                     },
                     child: const Text(
-                      "LoginScreen",
+                      "Login",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),

@@ -4,18 +4,18 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../screens/prepare_ride.dart';
 
-class TurnByTurn extends StatefulWidget {
+class Navigation extends StatefulWidget {
   final LatLng sourceLatLng;
   final LatLng destLatLng;
-  const TurnByTurn(
+  const Navigation(
       {super.key, required this.sourceLatLng, required this.destLatLng});
   static const routeName = "/turn-by-turn";
 
   @override
-  State<TurnByTurn> createState() => _TurnByTurnState();
+  State<Navigation> createState() => _NavigationState();
 }
 
-class _TurnByTurnState extends State<TurnByTurn> {
+class _NavigationState extends State<Navigation> {
   // Waypoints to mark trip start and end
   late WayPoint sourceWaypoint, destinationWaypoint;
   var wayPoints = <WayPoint>[];

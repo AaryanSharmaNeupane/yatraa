@@ -57,16 +57,15 @@ class _SplashState extends State<Splash> {
     sharedPreferences.setString('current-address', currentAddress);
     sharedPreferences.setBool("first-run", firstRun);
 
-    // firstRun
-    //     // ignore: use_build_context_synchronously
-    //     ?
-    // Navigator.pushNamedAndRemoveUntil(
-    //         context, LoginScreen.routeName, (route) => false)
-
-    // :
-    // ignore: use_build_context_synchronously
-    Navigator.pushNamedAndRemoveUntil(
-        context, LoginScreen.routeName, (route) => false);
+    firstRun
+        ?
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamedAndRemoveUntil(
+            context, LoginScreen.routeName, (route) => false)
+        :
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamedAndRemoveUntil(
+            context, Home.routeName, (route) => false);
   }
 
   @override
