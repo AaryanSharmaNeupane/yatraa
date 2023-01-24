@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
 import '../screens/home.dart';
-import '../screens/login_screen.dart';
+import 'login_screen1.dart';
 
 // ignore: must_be_immutable
 class OtpVerificationScreen extends StatelessWidget {

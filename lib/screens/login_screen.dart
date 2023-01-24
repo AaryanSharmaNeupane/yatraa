@@ -1,132 +1,120 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:yatraa/screens/sign_up_screen.dart';
 
-import '../screens/otp_verification_screen.dart';
+class Login extends StatefulWidget {
+  const Login({super.key});
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-  static const routeName = '/login-page';
-  static String verify = "";
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<Login> createState() => _LoginState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController phoneNumber = TextEditingController();
-  var countryCode = "+977";
+class _LoginState extends State<Login> {
+  final _formkey = GlobalKey<FormState>();
+  var email = "";
+  var password = "";
 
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: Container(
-        margin: const EdgeInsets.only(left: 25, right: 25),
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/login_page_img.png",
-                fit: BoxFit.cover,
-                height: 150,
-                width: 150,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              const Text(
-                "Phone Verification",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "We need to register your phone before getting started!",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 10,
+      appBar: AppBar(title: const Text("User Login")),
+      body: Form(
+        key: _formkey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: ListView(children: [
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: TextFormField(
+                  autofocus: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Email:',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    border: OutlineInputBorder(),
+                    errorStyle: TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 15,
                     ),
-                    SizedBox(
-                      width: 50,
-                      child: Row(
-                        children: [
-                          Text(countryCode),
-                          const SizedBox(
-                            width: 3,
+                  ),
+                  controller: emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'please enter email';
+                    } else if (!value.contains('@')) {
+                      return 'please enter valid email';
+                    }
+                    return null;
+                  }),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: TextFormField(
+                  autofocus: false,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password:',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    border: OutlineInputBorder(),
+                    errorStyle: TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 15,
+                    ),
+                  ),
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'please enter password';
+                    }
+                    return null;
+                  }),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 60),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formkey.currentState!.validate()) {
+                        setState(
+                          () {
+                            email = emailController.text;
+                            password = passwordController.text;
+                          },
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Forgot Password ?',
+                        style: TextStyle(fontSize: 14),
+                      ))
+                ],
+              ),
+            ),
+            Row(children: [
+              const Text(" don't have an account ?"),
+              TextButton(
+                  onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                const Signup(),
+                            transitionDuration: const Duration(seconds: 0),
                           ),
-                          Image.asset(
-                            "assets/images/Nepal_flag.png",
-                            height: 13,
-                          )
-                        ],
-                      ),
-                    ),
-                    const Text(
-                      "|",
-                      style: TextStyle(
-                        fontSize: 33,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: phoneNumber,
-                        keyboardType: TextInputType.phone,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Phone Number",
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              SizedBox(
-                height: 45,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await FirebaseAuth.instance.verifyPhoneNumber(
-                      phoneNumber: countryCode + phoneNumber.text,
-                      verificationCompleted:
-                          (PhoneAuthCredential credential) {},
-                      verificationFailed: (FirebaseAuthException e) {},
-                      codeSent: (String verificationId, int? resendToken) {
-                        LoginScreen.verify = verificationId;
-                        Navigator.of(context)
-                            .pushNamed(OtpVerificationScreen.routeName);
+                        )
                       },
-                      codeAutoRetrievalTimeout: (String verificationId) {},
-                    );
-                  },
-                  child: const Text('Send the OTP'),
-                ),
-              ),
-            ],
-          ),
+                  child: const Text('Signup')),
+            ])
+          ]),
         ),
       ),
     );
