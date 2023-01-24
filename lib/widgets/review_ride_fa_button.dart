@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +21,6 @@ Widget reviewRideFaButton(BuildContext context) {
 
         // ignore: use_build_context_synchronously
         Provider.of<DriverLocation>(context, listen: false).addLocation();
-        var timer = Timer.periodic(
-            const Duration(seconds: 5), (Timer t) => CircularProgressIndicator);
 
         // ignore: use_build_context_synchronously
         Navigator.push(

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:yatraa/screens/sign_up_screen.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+  static const routeName = "/login-screen";
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginScreen> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<LoginScreen> {
   final _formkey = GlobalKey<FormState>();
   var email = "";
   var password = "";
@@ -18,7 +19,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("User Login")),
+      appBar: AppBar(title: const Text("Login Screen")),
       body: Form(
         key: _formkey,
         child: Padding(
@@ -86,7 +87,7 @@ class _LoginState extends State<Login> {
                       }
                     },
                     child: const Text(
-                      "Login",
+                      "LoginScreen",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -100,14 +101,14 @@ class _LoginState extends State<Login> {
               ),
             ),
             Row(children: [
-              const Text(" don't have an account ?"),
+              const Text("Don't have an account?"),
               TextButton(
                   onPressed: () => {
                         Navigator.pushReplacement(
                           context,
                           PageRouteBuilder(
                             pageBuilder: (context, animation1, animation2) =>
-                                const Signup(),
+                                const SignupScreen(),
                             transitionDuration: const Duration(seconds: 0),
                           ),
                         )

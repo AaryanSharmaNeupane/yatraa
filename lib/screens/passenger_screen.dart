@@ -137,9 +137,8 @@ class _PassengerScreenState extends State<PassengerScreen> {
                         builder: (_) => BusStopPath(
                           modifiedResponse: getModifiedResponse,
                           sourceLatLng: currentLocation,
-                          // destLatLng: LatLng(
-                          //     response.data['lat'], response.data['lon']),
-                          destLatLng: LatLng(27.6595694, 85.3245348),
+                          destLatLng: LatLng(
+                              response.data['lat'], response.data['lon']),
                           sourceAddress: currentAddress,
                           destAddress: response.data['address'],
                         ),
@@ -206,19 +205,19 @@ class _PassengerScreenState extends State<PassengerScreen> {
               ),
             ),
           ),
-          Positioned(
-            right: 5,
-            bottom: 250,
-            child: SizedBox(
-              height: 35,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(PrepareRide.routeName);
-                },
-                child: const Icon(Icons.search),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   right: 5,
+          //   bottom: 250,
+          //   child: SizedBox(
+          //     height: 35,
+          //     child: FloatingActionButton.small(
+          //       onPressed: () {
+          //         Navigator.of(context).pushNamed(PrepareRide.routeName);
+          //       },
+          //       child: const Icon(Icons.search),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

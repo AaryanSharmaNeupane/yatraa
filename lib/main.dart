@@ -1,16 +1,14 @@
-// ignore_for_file: constant_identifier_names
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yatraa/screens/login_screen.dart';
+import 'package:yatraa/screens/sign_up_screen.dart';
 
 import '../providers/bus_stop_location.dart';
 import '../providers/driver_location.dart';
 import '../screens/driver_form_screen.dart';
 import '../screens/driver_screen.dart';
-import 'screens/login_screen1.dart';
-import '../screens/otp_verification_screen.dart';
+
 import '../screens/passenger_screen.dart';
 import '../screens/rate_driver_screen.dart';
 import '../screens/home.dart';
@@ -18,15 +16,14 @@ import '../screens/prepare_ride.dart';
 import 'UI/splash.dart';
 
 late SharedPreferences sharedPreferences;
+// ignore: constant_identifier_names
 const String MAPBOX_ACCESS_TOKEN =
     "pk.eyJ1IjoiYWFyeWFuLW5ldXBhbmUiLCJhIjoiY2xkYTV0N3U1MGZrMjN2bzJ4dDJnNmJkMiJ9._wIBq1H8aBpScg9jJk10ag";
 const String serverUrl = "https://yatraa.up.railway.app";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //for splash screen
-  await Firebase.initializeApp();
-  sharedPreferences = await SharedPreferences
-      .getInstance(); //Using shared preference for storage of current user location
+  sharedPreferences = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
@@ -64,11 +61,10 @@ class MyApp extends StatelessWidget {
             PrepareRide.routeName: (context) => const PrepareRide(),
             DriverScreen.routeName: (context) => const DriverScreen(),
             PassengerScreen.routeName: (context) => const PassengerScreen(),
-            OtpVerificationScreen.routeName: (context) =>
-                OtpVerificationScreen(),
-            LoginScreen.routeName: (context) => const LoginScreen(),
             RateDriverScreen.routeName: (context) => const RateDriverScreen(),
             DriverFormScreen.routeName: (context) => const DriverFormScreen(),
+            LoginScreen.routeName: (context) => const LoginScreen(),
+            SignupScreen.routeName: (context) => const SignupScreen(),
           },
         ),
       ),

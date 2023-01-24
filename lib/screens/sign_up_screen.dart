@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 
 import 'login_screen.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
+  static const routeName = '/sign-up-screen';
 
   @override
   // ignore: library_private_types_in_public_api
   _SignupState createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
 
   var email = "";
   var password = "";
   var confirmPassword = "";
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -35,7 +35,7 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User SignUp"),
+        title: const Text("SignUp Screen"),
       ),
       body: Form(
         key: _formKey,
@@ -112,7 +112,6 @@ class _SignupState extends State<Signup> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Validate returns true if the form is valid, otherwise false.
                       if (_formKey.currentState!.validate()) {
                         setState(() {
                           email = emailController.text;
@@ -139,7 +138,7 @@ class _SignupState extends State<Signup> {
                               PageRouteBuilder(
                                 pageBuilder:
                                     (context, animation1, animation2) =>
-                                        const Login(),
+                                        const LoginScreen(),
                                 transitionDuration: const Duration(seconds: 0),
                               ),
                             )

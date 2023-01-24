@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:yatraa/screens/login_screen1.dart';
 
 import '../main.dart';
 import '../helpers/mapbox_handler.dart';
 import '../screens/home.dart';
+import '../screens/login_screen.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -59,13 +59,14 @@ class _SplashState extends State<Splash> {
 
     // firstRun
     //     // ignore: use_build_context_synchronously
-    //     ? Navigator.pushNamedAndRemoveUntil(
+    //     ?
+    // Navigator.pushNamedAndRemoveUntil(
     //         context, LoginScreen.routeName, (route) => false)
 
     // :
     // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(
-        context, Home.routeName, (route) => false);
+        context, LoginScreen.routeName, (route) => false);
   }
 
   @override
