@@ -38,7 +38,6 @@ class _PassengerScreenState extends State<PassengerScreen> {
 
   @override
   void initState() {
-    //Set initial camera position and current address
     _initialCameraPosition = CameraPosition(
       target: currentLocation,
       zoom: 14,
@@ -119,16 +118,11 @@ class _PassengerScreenState extends State<PassengerScreen> {
                   onPressed: () async {
                     var response = await _dio.post(Uri.parse(url).toString(),
                         data:
-                            "{\"lon\":${currentLocation.latitude},\"lat\":${currentLocation.longitude}}");
-                    // print(currentLocation.latitude);
-                    // print(currentLocation.longitude);
+                            "{\"lon\":${currentLocation.longitude},\"lat\":${currentLocation.latitude}}");
 
                     Map getModifiedResponse = await getDirectionsAPIResponse(
                         currentLocation,
                         LatLng(response.data['lat'], response.data['lon']));
-                    // print(currentLocation.latitude);
-                    // print(currentLocation.longitude);
-                    // print(LatLng(response.data['lat'], response.data['lon']));
 
                     // ignore: use_build_context_synchronously
                     Navigator.push(
@@ -197,6 +191,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
             child: SizedBox(
               height: 35,
               child: FloatingActionButton(
+                heroTag: null,
                 onPressed: () {
                   controller.animateCamera(
                       CameraUpdate.newCameraPosition(_initialCameraPosition));
@@ -205,19 +200,20 @@ class _PassengerScreenState extends State<PassengerScreen> {
               ),
             ),
           ),
-          // Positioned(
-          //   right: 5,
-          //   bottom: 250,
-          //   child: SizedBox(
-          //     height: 35,
-          //     child: FloatingActionButton.small(
-          //       onPressed: () {
-          //         Navigator.of(context).pushNamed(PrepareRide.routeName);
-          //       },
-          //       child: const Icon(Icons.search),
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            right: 5,
+            bottom: 250,
+            child: SizedBox(
+              height: 35,
+              child: FloatingActionButton(
+                heroTag: null,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(PrepareRide.routeName);
+                },
+                child: const Icon(Icons.search),
+              ),
+            ),
+          ),
         ],
       ),
     );

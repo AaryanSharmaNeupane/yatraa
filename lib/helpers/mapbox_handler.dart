@@ -6,19 +6,15 @@ import '../requests/mapbox_search.dart';
 
 // ----------------------------- Mapbox Search Query -----------------------------
 String getValidatedQueryFromQuery(String query) {
-  // Remove whitespaces
   String validatedQuery = query.trim();
   return validatedQuery;
 }
 
 Future<List> getParsedResponseForQuery(String value) async {
   List parsedResponses = [];
-
-  // If empty query send blank response
   String query = getValidatedQueryFromQuery(value);
   if (query == '') return parsedResponses;
 
-  // Else search and then send response
   var response = await getSearchResultsFromQueryUsingMapbox(query);
 
   List features = response['features'];

@@ -22,7 +22,6 @@ class ReviewRide extends StatefulWidget {
 }
 
 class _ReviewRideState extends State<ReviewRide> {
-  // Mapbox Maps SDK related
   final List<CameraPosition> _kTripEndPoints = [];
   late MapboxMapController controller;
   late CameraPosition _initialCameraPosition;
@@ -30,7 +29,6 @@ class _ReviewRideState extends State<ReviewRide> {
   late List<CameraPosition> busStopLocationCoordinates;
   late List<CameraPosition> driverLocationCoordinates;
 
-  // Directions API response related
   late String distance;
   late String dropOffTime;
   late Map geometry;
@@ -39,10 +37,7 @@ class _ReviewRideState extends State<ReviewRide> {
 
   @override
   void initState() {
-    // initialise distance, dropOffTime, geometry
     _initialiseDirectionsResponse();
-
-    // initialise initialCameraPosition, address and trip end points
     _initialCameraPosition = CameraPosition(
       target: getCenterCoordinatesForPolyline(geometry),
       zoom: 14,
