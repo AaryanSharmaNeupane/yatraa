@@ -21,12 +21,36 @@ class _LoginState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Login Screen")),
+      // appBar: AppBar(title: const Text("Login")),
       body: Form(
         key: _formkey,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: ListView(children: [
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              height: 100,
+              width: 100,
+              child: Image.asset(
+                'assets/images/logo_.png',
+                height: 50,
+                width: 50,
+              ),
+            ),
+            Center(
+              child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: const Text(
+                    "Welcome",
+                    style: TextStyle(
+                        fontSize: 18,
+                        backgroundColor: Colors.green,
+                        color: Colors.white),
+                  )),
+            ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: TextFormField(
@@ -73,7 +97,7 @@ class _LoginState extends State<LoginScreen> {
                   }),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 60),
+              margin: const EdgeInsets.only(left: 24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -99,7 +123,7 @@ class _LoginState extends State<LoginScreen> {
                       onPressed: () {},
                       child: const Text(
                         'Forgot Password ?',
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: 12),
                       ))
                 ],
               ),

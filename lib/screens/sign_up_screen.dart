@@ -34,9 +34,9 @@ class _SignupState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("SignUp Screen"),
-      ),
+      // appBar: AppBar(
+      //   title: const Text("SignUp"),
+      // ),
       body: Form(
         key: _formKey,
         child: Padding(
