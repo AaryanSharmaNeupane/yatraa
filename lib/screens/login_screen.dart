@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import '../screens/home.dart';
 import '../screens/sign_up_screen.dart';
 
@@ -18,6 +20,8 @@ class _LoginState extends State<LoginScreen> {
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  String url = "$serverUrl/users/login/";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +82,8 @@ class _LoginState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      var token;
                       if (_formkey.currentState!.validate()) {
                         setState(
                           () {
@@ -86,6 +91,20 @@ class _LoginState extends State<LoginScreen> {
                             password = passwordController.text;
                           },
                         );
+                        final response = await Dio().post(url, data: {
+                          "email": email,
+                          "password": password,
+                        });
+
+                        token = response.data['jwt'];
+                        final r = await Dio().get(
+                          '$serverUrl/users/ ',
+                          options: Options(
+                            headers: {'Cookie': 'jwt=$token'},
+                          ),
+                        );
+                        print(r);
+                        // ignore: use_build_context_synchronously
                         Navigator.pushNamedAndRemoveUntil(
                             context, Home.routeName, (route) => false);
                       }
