@@ -22,7 +22,7 @@ class _DriverScreenState extends State<DriverScreen> {
   late MapboxMapController controller;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final Dio _dio = Dio();
-  String url = "$serverUrl/location/create/3/";
+  String url = "$serverUrl/location/create/";
   @override
   void initState() {
     //Set initial camera position and current address
@@ -41,7 +41,9 @@ class _DriverScreenState extends State<DriverScreen> {
   // double lon = currentLocation.longitude;
   // String data = "{\"lon\":\"$lon\",\"lat\":\"$lat\"}";
   // Timer.periodic(const Duration(seconds: 1),
-  //     (Timer t) => _dio.post(Uri.parse(url).toString(), data: data));
+  //     (Timer t) => _dio.post(Uri.parse(url).toString(), data: data, options: Options(
+  //                           headers: {'Cookie': 'jwt=${getToken()}'},
+  //                         ),));
   // }
 
   _onStyleLoadedCallBack() async {
@@ -59,7 +61,13 @@ class _DriverScreenState extends State<DriverScreen> {
       double lon = symbol.options.geometry!.longitude;
       String data = "{\"lon\":\"$lon\",\"lat\":\"$lat\"}";
       // print(data);
-      _dio.post(Uri.parse(url).toString(), data: data);
+      _dio.post(
+        Uri.parse(url).toString(),
+        data: data,
+        options: Options(
+          headers: {'Cookie': 'jwt=${getToken()}'},
+        ),
+      );
     });
   }
 

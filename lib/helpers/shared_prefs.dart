@@ -2,6 +2,10 @@ import 'dart:convert';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import '../main.dart';
 
+String getToken() {
+  return sharedPreferences.getString("jwt-token")!;
+}
+
 List<String> getDriverInformation() {
   return sharedPreferences.getStringList("driver-information")!;
 }

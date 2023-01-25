@@ -5,7 +5,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../main.dart';
 import '../helpers/mapbox_handler.dart';
-import '../screens/home.dart';
+// import '../screens/home.dart';
 import '../screens/login_screen.dart';
 
 class Splash extends StatefulWidget {

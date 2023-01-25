@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:yatraa/helpers/shared_prefs.dart';
 
 import '../main.dart';
 import '../screens/home.dart';
@@ -25,35 +26,20 @@ class _LoginState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text("Login")),
       body: Form(
         key: _formkey,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: ListView(children: [
-            SizedBox(
-              height: 50,
-            ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
-              height: 100,
-              width: 100,
+              height: 250,
+              width: 250,
               child: Image.asset(
-                'assets/images/logo_.png',
+                'assets/images/login_page_img.png',
                 height: 50,
                 width: 50,
               ),
-            ),
-            Center(
-              child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: const Text(
-                    "Welcome",
-                    style: TextStyle(
-                        fontSize: 18,
-                        backgroundColor: Colors.green,
-                        color: Colors.white),
-                  )),
             ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
@@ -107,7 +93,6 @@ class _LoginState extends State<LoginScreen> {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      var token;
                       if (_formkey.currentState!.validate()) {
                         setState(
                           () {
@@ -120,14 +105,16 @@ class _LoginState extends State<LoginScreen> {
                           "password": password,
                         });
 
-                        token = response.data['jwt'];
-                        final r = await Dio().get(
-                          '$serverUrl/users/ ',
+                        sharedPreferences.setString(
+                            "jwt-token", response.data['jwt']);
+
+                        await Dio().get(
+                          '$serverUrl/users/',
                           options: Options(
-                            headers: {'Cookie': 'jwt=$token'},
+                            headers: {'Cookie': 'jwt=${getToken()}'},
                           ),
                         );
-                        print(r);
+
                         // ignore: use_build_context_synchronously
                         Navigator.pushNamedAndRemoveUntil(
                             context, Home.routeName, (route) => false);

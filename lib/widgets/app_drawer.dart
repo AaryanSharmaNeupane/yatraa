@@ -22,7 +22,7 @@ class _AppDrawerState extends State<AppDrawer> {
   final Dio _dio = Dio();
   // ignore: prefer_typing_uninitialized_variables
   Timer? timer;
-  String url = "$serverUrl/location/create/3/";
+  String url = "$serverUrl/location/create/";
 
   Widget buildDrawerHeader() {
     return DrawerHeader(
@@ -97,7 +97,14 @@ class _AppDrawerState extends State<AppDrawer> {
                   // timer = Timer.periodic(
                   //     const Duration(seconds: 5),
                   //     (Timer t) =>
-                  _dio.post(Uri.parse(url).toString(), data: data);
+                  _dio.post(
+                    Uri.parse(url).toString(),
+                    data: data,
+                    options: Options(
+                      headers: {'Cookie': 'jwt=${getToken()}'},
+                    ),
+                  );
+
                   // );
                   sharedPreferences.getStringList("driver-information") == null
                       ? Navigator.of(context)
