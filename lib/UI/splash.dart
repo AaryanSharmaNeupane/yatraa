@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 import '../helpers/mapbox_handler.dart';
 // import '../screens/home.dart';
+import '../providers/bus_stop_location.dart';
 import '../screens/login_screen.dart';
 
 class Splash extends StatefulWidget {
@@ -45,6 +47,9 @@ class _SplashState extends State<Splash> {
 
     String currentAddress =
         (await getParsedReverseGeocoding(currentLocation))['place'];
+
+    // ignore: use_build_context_synchronously
+    Provider.of<BusStopLocation>(context, listen: false).addLocation();
 
     sharedPreferences.setDouble('latitude', locationData.latitude!);
     sharedPreferences.setDouble('longitude', locationData.longitude!);
