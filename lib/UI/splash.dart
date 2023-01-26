@@ -72,21 +72,11 @@ class _SplashState extends State<Splash> {
     return Material(
       child: Container(
         color: const Color.fromARGB(255, 29, 141, 34),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/images/logo_.png",
-              fit: BoxFit.cover,
-            ),
-            Text(
-              'Yatraa',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineLarge
-                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ],
+        child: Center(
+          child: Image.asset(
+            "assets/images/logo_.png",
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

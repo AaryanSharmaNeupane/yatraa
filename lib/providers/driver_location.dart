@@ -12,27 +12,15 @@ class DriverLocation with ChangeNotifier {
   }
 
   void addLocation() async {
-    var response = await Dio().get('$serverUrl/location/3/live/');
+    var response = await Dio().get('$serverUrl/location/1/live/');
 
     var parsedResponse = {
       "latitude": response.data[0]['lat'],
       "longitude": response.data[0]['lon'],
     };
-
+    print(parsedResponse);
     _locations.add(parsedResponse);
-    Timer.periodic(
-      const Duration(seconds: 5),
-      (Timer t) async {
-        var response = await Dio().get('$serverUrl/location/3/live/');
-        updateLocation(response.data[0]['lat'], response.data[0]['lon']);
-      },
-    );
-    notifyListeners();
-  }
 
-  void updateLocation(double lon, double lat) {
-    _locations[0]['latitude'] = lat;
-    _locations[0]['longitude'] = lat;
     notifyListeners();
   }
 }
