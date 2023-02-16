@@ -62,7 +62,7 @@ class _SplashState extends State<Splash> {
     Navigator.pushNamedAndRemoveUntil(
         context, LoginScreen.routeName, (route) => false);
     // :
-    // // ignore: use_build_context_synchronously
+    // ignore: use_build_context_synchronously
     // Navigator.pushNamedAndRemoveUntil(
     //     context, Home.routeName, (route) => false);
   }

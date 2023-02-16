@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,7 @@ class DriverLocation with ChangeNotifier {
       "latitude": response.data[0]['lat'],
       "longitude": response.data[0]['lon'],
     };
-    print(parsedResponse);
+    // print(parsedResponse);
     _locations.add(parsedResponse);
 
     notifyListeners();

@@ -1,10 +1,13 @@
 //access token is required
 
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/driver_location.dart';
+// import '../providers/driver_location.dart';
 import '../helpers/mapbox_handler.dart';
 import '../helpers/shared_prefs.dart';
 import '../helpers/commons.dart';
@@ -14,7 +17,9 @@ import '../widgets/review_ride_bottom_sheet.dart';
 
 class ReviewRide extends StatefulWidget {
   final Map modifiedResponse;
-  const ReviewRide({Key? key, required this.modifiedResponse})
+  final LatLng driverLatlng;
+  const ReviewRide(
+      {Key? key, required this.modifiedResponse, required this.driverLatlng})
       : super(key: key);
 
   @override
@@ -25,15 +30,20 @@ class _ReviewRideState extends State<ReviewRide> {
   final List<CameraPosition> _kTripEndPoints = [];
   late MapboxMapController controller;
   late CameraPosition _initialCameraPosition;
+  late LatLng initialLatlng;
 
   late List<CameraPosition> busStopLocationCoordinates;
-  late List<CameraPosition> driverLocationCoordinates;
+  // late List<CameraPosition> driverLocationCoordinates;
 
   late String distance;
   late String dropOffTime;
   late Map geometry;
 
-  String url = "$serverUrl/location/create/2/";
+  // String url = "$serverUrl/location/create/2/";
+
+  StreamController latlngController = StreamController();
+  // ignore: prefer_typing_uninitialized_variables
+  var driverSymbol;
 
   @override
   void initState() {
@@ -60,7 +70,15 @@ class _ReviewRideState extends State<ReviewRide> {
     this.controller = controller;
   }
 
-  _onStyleLoadedCallback() async {
+  _updateMarker() async {
+    var response = await Dio().get('$serverUrl/location/1/live/');
+    initialLatlng = LatLng(response.data[0]['lat'], response.data[0]['lon']);
+    latlngController.sink.add(initialLatlng);
+  }
+
+  _onStyleLoadedCallback(val) async {
+    // ignore: prefer_typing_uninitialized_variables
+
     for (CameraPosition coordinates in busStopLocationCoordinates) {
       await controller.addSymbol(
         SymbolOptions(
@@ -70,20 +88,22 @@ class _ReviewRideState extends State<ReviewRide> {
         ),
       );
     }
-
-    for (CameraPosition coordinates in driverLocationCoordinates) {
-      await controller.addSymbol(
-        SymbolOptions(
-          geometry: coordinates.target,
-          iconSize: 1.5,
-          iconImage: "assets/images/marker.png",
-        ),
-      );
+    if (driverSymbol != null) {
+      await controller.removeSymbol(driverSymbol);
     }
+
+    driverSymbol = await controller.addSymbol(
+      SymbolOptions(
+        geometry: val,
+        iconSize: 1.5,
+        iconImage: "assets/images/marker.png",
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    initialLatlng = widget.driverLatlng;
     final busStopLocationData = Provider.of<BusStopLocation>(context);
     final busStopLocation = busStopLocationData.locations;
     busStopLocationCoordinates = List<CameraPosition>.generate(
@@ -94,15 +114,8 @@ class _ReviewRideState extends State<ReviewRide> {
         zoom: 15,
       ),
     );
-    final driverLocation = Provider.of<DriverLocation>(context).locations;
-    driverLocationCoordinates = List<CameraPosition>.generate(
-      driverLocation.length,
-      (index) => CameraPosition(
-        target: LatLng(driverLocation[index]['latitude'],
-            driverLocation[index]['longitude']),
-        zoom: 15,
-      ),
-    );
+    Timer.periodic(const Duration(seconds: 5), (Timer t) => _updateMarker());
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -111,20 +124,37 @@ class _ReviewRideState extends State<ReviewRide> {
             },
             icon: const Icon(Icons.arrow_back)),
         title: const Text('Review Ride'),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                var response = await Dio().get('$serverUrl/location/1/live/');
+                initialLatlng =
+                    LatLng(response.data[0]['lat'], response.data[0]['lon']);
+                latlngController.sink.add(initialLatlng);
+              },
+              icon: const Icon(Icons.refresh))
+        ],
       ),
       body: SafeArea(
         child: Stack(
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height,
-              child: MapboxMap(
-                accessToken: MAPBOX_ACCESS_TOKEN,
-                initialCameraPosition: _initialCameraPosition,
-                myLocationEnabled: true,
-                onMapCreated: _onMapCreated,
-                onStyleLoadedCallback: _onStyleLoadedCallback,
-                myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
-              ),
+              child: StreamBuilder(
+                  stream: latlngController.stream,
+                  builder: (context, snapshot) {
+                    _onStyleLoadedCallback(initialLatlng);
+                    return MapboxMap(
+                      accessToken: MAPBOX_ACCESS_TOKEN,
+                      initialCameraPosition: _initialCameraPosition,
+                      myLocationEnabled: true,
+                      onMapCreated: _onMapCreated,
+                      onStyleLoadedCallback: () =>
+                          _onStyleLoadedCallback(initialLatlng),
+                      myLocationTrackingMode:
+                          MyLocationTrackingMode.TrackingGPS,
+                    );
+                  }),
             ),
             reviewRideBottomSheet(context, distance, dropOffTime),
             Positioned(
