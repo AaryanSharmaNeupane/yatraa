@@ -1,11 +1,6 @@
-// import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:yatraa/main.dart';
-import 'package:yatraa/widgets/login_headers.dart';
-import 'package:yatraa/widgets/login_label.dart';
-import 'package:yatraa/widgets/login_title.dart';
 
-import '../widgets/login_buttons.dart';
+import '../widgets/bezierContainer.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -18,6 +13,102 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupState extends State<SignupScreen> {
+  Widget _backButton() {
+    return InkWell(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
+              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
+            ),
+            Text('Back',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _entryField(String title, {bool isPassword = false}) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          TextField(
+              obscureText: isPassword,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  fillColor: Color(0xfff3f3f4),
+                  filled: true))
+        ],
+      ),
+    );
+  }
+
+  Widget _loginAccountLabel() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 20),
+        padding: EdgeInsets.all(15),
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Already have an account ?',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Login',
+              style: TextStyle(
+                  color: Color(0xFF147511),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _title() {
+    return RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+            text: 'YATRAA',
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF1E671F))));
+  }
+
+  Widget _emailPasswordWidget() {
+    return Column(
+      children: <Widget>[
+        _entryField("Email id"),
+        _entryField("Password", isPassword: true),
+        _entryField("Confirm password", isPassword: true),
+      ],
+    );
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   var email = "";
@@ -27,39 +118,6 @@ class _SignupState extends State<SignupScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-
-  Widget _submitButton() {
-    return InkWell(
-      onTap: () async {
-        if (_formKey.currentState!.validate()) {
-          setState(() {
-            email = emailController.text;
-            password = passwordController.text;
-            confirmPassword = confirmPasswordController.text;
-          });
-        }
-        // Dio().post(
-        //   Uri.parse("$serverUrl/users/register/").toString(),
-        //   data: {
-        //     "email": email,
-        //     "password": password,
-        //   },
-        // );
-        Navigator.pushNamedAndRemoveUntil(
-            context, LoginScreen.routeName, (route) => false);
-      },
-      child: button(context, "Sign Up"),
-    );
-  }
-
-  Widget _createAccountLabel() {
-    return InkWell(
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()));
-        },
-        child: label(context, "Already have an account?", "Login"));
-  }
 
   @override
   void dispose() {
@@ -72,101 +130,63 @@ class _SignupState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 225, 222, 222),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              title(context),
-              header("Email:"),
+      backgroundColor: Color(0xFFADCDAD),
+      body: Container(
+          height: height,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: -MediaQuery.of(context).size.height * .15,
+                right: -MediaQuery.of(context).size.width * .4,
+                child: BezierContainer(),
+              ),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: TextFormField(
-                  autofocus: false,
-                  decoration: const InputDecoration(
-                    fillColor: Color.fromARGB(255, 201, 201, 201),
-                    border: InputBorder.none,
-                    filled: true,
-                    errorStyle: TextStyle(
-                      color: Colors.redAccent,
-                      fontSize: 15,
-                    ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: height * .2),
+                      _title(),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      _emailPasswordWidget(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  email = emailController.text;
+                                  password = passwordController.text;
+                                  confirmPassword =
+                                      confirmPasswordController.text;
+                                });
+                              }
+                            },
+                            child: const Text(
+                              'Register Now',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                      _loginAccountLabel(),
+                    ],
                   ),
-                  controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Email';
-                    } else if (!value.contains('@')) {
-                      return 'Please Enter Valid Email';
-                    }
-                    return null;
-                  },
                 ),
               ),
-              header("Password:"),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: TextFormField(
-                  autofocus: false,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    fillColor: Color.fromARGB(255, 201, 201, 201),
-                    border: InputBorder.none,
-                    filled: true,
-                    errorStyle: TextStyle(
-                      color: Colors.redAccent,
-                      fontSize: 15,
-                    ),
-                  ),
-                  controller: passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Password';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              header("Confirm Password:"),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: TextFormField(
-                  autofocus: false,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    fillColor: Color.fromARGB(255, 201, 201, 201),
-                    border: InputBorder.none,
-                    filled: true,
-                    errorStyle: TextStyle(
-                      color: Colors.redAccent,
-                      fontSize: 15,
-                    ),
-                  ),
-                  controller: confirmPasswordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Password';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _submitButton(),
-              const SizedBox(
-                height: 10,
-              ),
-              _createAccountLabel(),
+              Positioned(top: 40, left: 0, child: _backButton()),
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 }
