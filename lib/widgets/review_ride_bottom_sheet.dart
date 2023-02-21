@@ -3,6 +3,7 @@ import 'package:yatraa/screens/passenger_screen.dart';
 // import 'package:yatraa/screens/rate_driver_screen.dart';
 import '../helpers/commons.dart';
 import '../helpers/shared_prefs.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 Widget reviewRideBottomSheet(
     BuildContext context, String distance, String dropOffTime) {
@@ -53,20 +54,37 @@ Widget reviewRideBottomSheet(
                         )),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    //payment
-                  },
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(20)),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        // Text('Rate Your Driver'),
-                        Text("Pay with Khalti"),
-                      ]),
-                ),
+                KhaltiScope(
+                publicKey: "test_public_key_17fdd385389b41a4b20af551b9da1766",
+                enabledDebugging: true,
+                builder: (context, navKey) {
+                  return MaterialApp(
+                    title: 'Khalti Demo',
+                    theme: ThemeData(
+                      primarySwatch: Colors.blue,
+                    ),
+                    home: const KhatiScreen(),
+                    navigatorKey: navKey,
+                    localizationsDelegates: const [
+                      KhaltiLocalizations.delegate,
+                    ],
+                  );
+                })
+                // ElevatedButton(
+                //   onPressed: () {
+                //     //payment
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //       padding: const EdgeInsets.all(20)),
+                //   child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: const [
+                //         // Text('Rate Your Driver'),
+                //         Text("Pay with Khalti"),
+                //       ]),
+                // ),
               ]),
+              
         ),
       ),
     ),
