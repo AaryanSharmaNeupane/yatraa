@@ -41,12 +41,7 @@ class _LoginState extends State<LoginScreen> {
             "password": password,
           });
           sharedPreferences.setString("jwt-token", response.data['jwt']);
-          await Dio().get(
-            '$serverUrl/users/',
-            options: Options(
-              headers: {'Cookie': 'jwt=${getToken()}'},
-            ),
-          );
+
           // ignore: use_build_context_synchronously
           Navigator.pushNamedAndRemoveUntil(
               context, Home.routeName, (route) => false);

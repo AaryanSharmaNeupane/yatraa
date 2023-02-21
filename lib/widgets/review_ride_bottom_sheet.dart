@@ -55,7 +55,7 @@ Widget reviewRideBottomSheet(
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(PassengerScreen.routeName);
+                    //payment
                   },
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(20)),
@@ -63,7 +63,7 @@ Widget reviewRideBottomSheet(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         // Text('Rate Your Driver'),
-                        Text("Start new journey"),
+                        Text("Pay with Khalti"),
                       ]),
                 ),
               ]),

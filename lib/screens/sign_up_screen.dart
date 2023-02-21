@@ -1,10 +1,12 @@
 // import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 // import 'package:yatraa/main.dart';
 import 'package:yatraa/widgets/login_headers.dart';
 import 'package:yatraa/widgets/login_label.dart';
 import 'package:yatraa/widgets/login_title.dart';
 
+import '../main.dart';
 import '../widgets/login_buttons.dart';
 import 'login_screen.dart';
 
@@ -38,13 +40,15 @@ class _SignupState extends State<SignupScreen> {
             confirmPassword = confirmPasswordController.text;
           });
         }
-        // Dio().post(
-        //   Uri.parse("$serverUrl/users/register/").toString(),
-        //   data: {
-        //     "email": email,
-        //     "password": password,
-        //   },
-        // );
+        Dio().post(
+          Uri.parse("$serverUrl/users/register/").toString(),
+          data: {
+            "email": email,
+            "password": password,
+          },
+        );
+        print(" $email");
+        print(" $password");
         Navigator.pushNamedAndRemoveUntil(
             context, LoginScreen.routeName, (route) => false);
       },

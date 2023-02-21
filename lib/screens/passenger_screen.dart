@@ -77,6 +77,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
     distance = (modifiedResponse['distance'] / 1000).toStringAsFixed(1);
     dropOffTime = getDropOffTime(modifiedResponse['duration']);
 
+    // ignore: use_build_context_synchronously
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {

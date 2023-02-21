@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
+import 'package:yatraa/screens/passenger_screen.dart';
 
 // import '../providers/driver_location.dart';
 import '../helpers/mapbox_handler.dart';
@@ -163,11 +164,26 @@ class _ReviewRideState extends State<ReviewRide> {
               child: SizedBox(
                 height: 35,
                 child: FloatingActionButton(
+                  heroTag: null,
                   onPressed: () {
                     controller.animateCamera(
                         CameraUpdate.newCameraPosition(_initialCameraPosition));
                   },
                   child: const Icon(Icons.my_location),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 5,
+              bottom: 275,
+              child: SizedBox(
+                height: 35,
+                child: FloatingActionButton(
+                  heroTag: null,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(PassengerScreen.routeName);
+                  },
+                  child: const Icon(Icons.home_filled),
                 ),
               ),
             ),
