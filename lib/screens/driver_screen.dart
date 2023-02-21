@@ -22,7 +22,7 @@ class _DriverScreenState extends State<DriverScreen> {
   late MapboxMapController controller;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final Dio _dio = Dio();
-  String url = "$serverUrl/location/create/1/";
+  String url = "$serverUrl/location/create/";
   @override
   void initState() {
     //Set initial camera position and current address

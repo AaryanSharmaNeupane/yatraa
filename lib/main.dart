@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yatraa/screens/khalti_screen.dart';
 
 import '../screens/login_screen.dart';
 import '../screens/sign_up_screen.dart';
@@ -34,38 +36,52 @@ class MyApp extends StatelessWidget {
       create: (context) => BusStopLocation(),
       child: ChangeNotifierProvider(
         create: (context) => DriverLocation(),
-        child: MaterialApp(
-          title: 'Yatraa',
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-            fontFamily: 'Quicksand',
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.green.shade600),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+        child: KhaltiScope(
+            publicKey: "test_public_key_17fdd385389b41a4b20af551b9da1766",
+            enabledDebugging: true,
+            builder: (context, navKey) {
+              return MaterialApp(
+                title: 'Yatraa',
+                theme: ThemeData(
+                  primarySwatch: Colors.green,
+                  fontFamily: 'Quicksand',
+                  elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.green.shade600),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      enableFeedback: true,
+                    ),
                   ),
                 ),
-                enableFeedback: true,
-              ),
-            ),
-          ),
-          debugShowCheckedModeBanner: false,
-          routes: {
-            "/": (context) => const Splash(),
-            Home.routeName: (context) => const Home(),
-            PrepareRide.routeName: (context) => const PrepareRide(),
-            DriverScreen.routeName: (context) => const DriverScreen(),
-            PassengerScreen.routeName: (context) => const PassengerScreen(),
-            RateDriverScreen.routeName: (context) => const RateDriverScreen(),
-            DriverFormScreen.routeName: (context) => const DriverFormScreen(),
-            LoginScreen.routeName: (context) => const LoginScreen(),
-            SignupScreen.routeName: (context) => const SignupScreen(),
-          },
-        ),
+                debugShowCheckedModeBanner: false,
+                routes: {
+                  "/": (context) => const Splash(),
+                  Home.routeName: (context) => const Home(),
+                  PrepareRide.routeName: (context) => const PrepareRide(),
+                  DriverScreen.routeName: (context) => const DriverScreen(),
+                  PassengerScreen.routeName: (context) =>
+                      const PassengerScreen(),
+                  RateDriverScreen.routeName: (context) =>
+                      const RateDriverScreen(),
+                  DriverFormScreen.routeName: (context) =>
+                      const DriverFormScreen(),
+                  LoginScreen.routeName: (context) => const LoginScreen(),
+                  SignupScreen.routeName: (context) => const SignupScreen(),
+                  KhaltiScreen.routeName: (context) => const KhaltiScreen(),
+                },
+                navigatorKey: navKey,
+                localizationsDelegates: const [
+                  KhaltiLocalizations.delegate,
+                ],
+              );
+            }),
       ),
     );
   }

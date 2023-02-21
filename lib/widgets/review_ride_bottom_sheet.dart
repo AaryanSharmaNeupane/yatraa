@@ -5,6 +5,8 @@ import '../helpers/commons.dart';
 import '../helpers/shared_prefs.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
+import '../screens/khalti_screen.dart';
+
 Widget reviewRideBottomSheet(
     BuildContext context, String distance, String dropOffTime) {
   // Get source and destination addresses from sharedPreferences
@@ -54,39 +56,73 @@ Widget reviewRideBottomSheet(
                         )),
                   ),
                 ),
-                KhaltiScope(
-                publicKey: "test_public_key_17fdd385389b41a4b20af551b9da1766",
-                enabledDebugging: true,
-                builder: (context, navKey) {
-                  return MaterialApp(
-                    title: 'Khalti Demo',
-                    theme: ThemeData(
-                      primarySwatch: Colors.blue,
-                    ),
-                    home: const KhatiScreen(),
-                    navigatorKey: navKey,
-                    localizationsDelegates: const [
-                      KhaltiLocalizations.delegate,
-                    ],
-                  );
-                })
-                // ElevatedButton(
-                //   onPressed: () {
-                //     //payment
-                //   },
-                //   style: ElevatedButton.styleFrom(
-                //       padding: const EdgeInsets.all(20)),
-                //   child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: const [
-                //         // Text('Rate Your Driver'),
-                //         Text("Pay with Khalti"),
-                //       ]),
-                // ),
+                ElevatedButton(
+                  onPressed: () {
+                    //payment
+                    payWithKhaltiInApp(context);
+                    // Navigator.of(context).pushNamed(KhaltiScreen.routeName);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(20)),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        // Text('Rate Your Driver'),
+                        Text("Pay with Khalti"),
+                      ]),
+                ),
               ]),
-              
         ),
       ),
     ),
   );
+}
+
+payWithKhaltiInApp(context) {
+  KhaltiScope.of(context).pay(
+    config: PaymentConfig(
+      amount: 50 * 100, //in paisa
+      productIdentity: 'Product Id',
+      productName: 'Product Name',
+      mobileReadOnly: false,
+    ),
+    preferences: [
+      PaymentPreference.khalti,
+    ],
+    onSuccess: onSuccess,
+    onFailure: onFailure,
+    onCancel: onCancel,
+  );
+}
+
+void onSuccess(PaymentSuccessModel success) {
+  // showDialog(
+  //   context: context,
+  //   builder: (context) {
+  //     return AlertDialog(
+  //       title: const Text('Payment Successful'),
+  //       actions: [
+  //         SimpleDialogOption(
+  //             child: const Text('OK'),
+  //             onPressed: () {
+  //               // setState(() {
+  //               //   referenceId = success.idx;
+  //               // });
+
+  //               Navigator.pop(context);
+  //             })
+  //       ],
+  //     );
+  //   },
+  // );
+}
+
+void onFailure(PaymentFailureModel failure) {
+  debugPrint(
+    failure.toString(),
+  );
+}
+
+void onCancel() {
+  debugPrint('Cancelled');
 }

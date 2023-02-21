@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
-class KhatiScreen extends StatefulWidget {
-  const KhatiScreen({super.key});
+class KhaltiScreen extends StatefulWidget {
+  const KhaltiScreen({super.key});
+  static const routeName = '/khalti-screen';
 
   @override
-  State<KhatiScreen> createState() => _KhatiScreenState();
+  State<KhaltiScreen> createState() => _KhaltiScreenState();
 }
 
-class _KhatiScreenState extends State<KhatiScreen> {
+class _KhaltiScreenState extends State<KhaltiScreen> {
   String referenceId = "";
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,6 @@ class _KhatiScreenState extends State<KhatiScreen> {
                   payWithKhaltiInApp();
                 },
                 child: const Text("Pay with Khalti")),
-            Text(referenceId)
           ],
         ),
       ),
@@ -37,14 +37,13 @@ class _KhatiScreenState extends State<KhatiScreen> {
   payWithKhaltiInApp() {
     KhaltiScope.of(context).pay(
       config: PaymentConfig(
-        amount: 50*100, //in paisa
+        amount: 50 * 100, //in paisa
         productIdentity: 'Product Id',
         productName: 'Product Name',
         mobileReadOnly: false,
       ),
       preferences: [
         PaymentPreference.khalti,
-        
       ],
       onSuccess: onSuccess,
       onFailure: onFailure,
@@ -58,7 +57,6 @@ class _KhatiScreenState extends State<KhatiScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Payment Successful'),
-      
           actions: [
             SimpleDialogOption(
                 child: const Text('OK'),
