@@ -59,7 +59,7 @@ Widget reviewRideBottomSheet(
                 ElevatedButton(
                   onPressed: () {
                     //payment
-                    payWithKhaltiInApp(context);
+                    payWithKhaltiInApp(context, money);
                     // Navigator.of(context).pushNamed(KhaltiScreen.routeName);
                   },
                   style: ElevatedButton.styleFrom(
@@ -78,10 +78,10 @@ Widget reviewRideBottomSheet(
   );
 }
 
-payWithKhaltiInApp(context) {
+payWithKhaltiInApp(context, money) {
   KhaltiScope.of(context).pay(
     config: PaymentConfig(
-      amount: 50 * 100, //in paisa
+      amount: money.toInt() * 100, //in paisa
       productIdentity: 'Product Id',
       productName: 'Product Name',
       mobileReadOnly: false,
@@ -97,7 +97,7 @@ payWithKhaltiInApp(context) {
 
 void onSuccess(PaymentSuccessModel success) {
   // showDialog(
-  //   context: context,
+  //   // context: context,
   //   builder: (context) {
   //     return AlertDialog(
   //       title: const Text('Payment Successful'),
@@ -105,9 +105,6 @@ void onSuccess(PaymentSuccessModel success) {
   //         SimpleDialogOption(
   //             child: const Text('OK'),
   //             onPressed: () {
-  //               // setState(() {
-  //               //   referenceId = success.idx;
-  //               // });
 
   //               Navigator.pop(context);
   //             })
