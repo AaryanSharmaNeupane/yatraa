@@ -121,6 +121,8 @@ class _PassengerScreenState extends State<PassengerScreen> {
                         data:
                             "{\"lon\":${currentLocation.longitude},\"lat\":${currentLocation.latitude}}");
 
+                    print(response.data['lat']);
+
                     Map getModifiedResponse = await getDirectionsAPIResponse(
                         currentLocation,
                         LatLng(response.data['lat'], response.data['lon']));
@@ -135,7 +137,7 @@ class _PassengerScreenState extends State<PassengerScreen> {
                           destLatLng: LatLng(
                               response.data['lat'], response.data['lon']),
                           sourceAddress: currentAddress,
-                          destAddress: response.data['address'],
+                          destAddress: response.data['location'],
                         ),
                       ),
                     );
@@ -164,8 +166,8 @@ class _PassengerScreenState extends State<PassengerScreen> {
     busStopLocationCoordinates = List<CameraPosition>.generate(
       busStopLocation.length,
       (index) => CameraPosition(
-        target: LatLng(busStopLocation[index]['latitude'],
-            busStopLocation[index]['longitude']),
+        target: LatLng(
+            busStopLocation[index]['lat'], busStopLocation[index]['lon']),
         zoom: 15,
       ),
     );

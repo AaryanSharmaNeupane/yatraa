@@ -113,8 +113,8 @@ class _ReviewRideState extends State<BusStopPath> {
     busStopLocationCoordinates = List<CameraPosition>.generate(
       busStopLocation.length,
       (index) => CameraPosition(
-        target: LatLng(busStopLocation[index]['latitude'],
-            busStopLocation[index]['longitude']),
+        target: LatLng(
+            busStopLocation[index]['lat'], busStopLocation[index]['lon']),
         zoom: 15,
       ),
     );
