@@ -47,8 +47,7 @@ class _SignupState extends State<SignupScreen> {
             "password": password,
           },
         );
-        print(" $email");
-        print(" $password");
+
         Navigator.pushNamedAndRemoveUntil(
             context, LoginScreen.routeName, (route) => false);
       },

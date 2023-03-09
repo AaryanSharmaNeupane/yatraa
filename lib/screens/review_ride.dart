@@ -4,11 +4,11 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
 import 'package:yatraa/screens/passenger_screen.dart';
 
-// import '../providers/driver_location.dart';
 import '../helpers/mapbox_handler.dart';
 import '../helpers/shared_prefs.dart';
 import '../helpers/commons.dart';
@@ -86,6 +86,7 @@ class _ReviewRideState extends State<ReviewRide> {
           geometry: coordinates.target,
           iconSize: 1.5,
           iconImage: "assets/images/bus-stop.png",
+          zIndex: 1,
         ),
       );
     }
@@ -98,8 +99,33 @@ class _ReviewRideState extends State<ReviewRide> {
         geometry: val,
         iconSize: 1.5,
         iconImage: "assets/images/marker.png",
+        zIndex: 2,
       ),
     );
+
+    // controller.onSymbolTapped.add((Symbol symbol) {
+    //   if (symbol.options.zIndex == 2) {
+    //     showModalBottomSheet(
+    //         context: context,
+    //         builder: (BuildContext context) {
+    //           return RatingBar.builder(
+    //             initialRating: 3,
+    //             minRating: 1,
+    //             direction: Axis.horizontal,
+    //             allowHalfRating: true,
+    //             itemCount: 5,
+    //             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+    //             itemBuilder: (context, _) => const Icon(
+    //               Icons.star,
+    //               color: Colors.amber,
+    //             ),
+    //             onRatingUpdate: (rating) {
+    //               print(rating);
+    //             },
+    //           );
+    //         });
+    //   }
+    // });
   }
 
   @override
@@ -161,21 +187,6 @@ class _ReviewRideState extends State<ReviewRide> {
             Positioned(
               right: 5,
               bottom: 230,
-              child: SizedBox(
-                height: 35,
-                child: FloatingActionButton(
-                  heroTag: null,
-                  onPressed: () {
-                    controller.animateCamera(
-                        CameraUpdate.newCameraPosition(_initialCameraPosition));
-                  },
-                  child: const Icon(Icons.my_location),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 5,
-              bottom: 275,
               child: SizedBox(
                 height: 35,
                 child: FloatingActionButton(

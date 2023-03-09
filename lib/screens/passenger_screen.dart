@@ -121,8 +121,6 @@ class _PassengerScreenState extends State<PassengerScreen> {
                         data:
                             "{\"lon\":${currentLocation.longitude},\"lat\":${currentLocation.latitude}}");
 
-                    print(response.data['lat']);
-
                     Map getModifiedResponse = await getDirectionsAPIResponse(
                         currentLocation,
                         LatLng(response.data['lat'], response.data['lon']));

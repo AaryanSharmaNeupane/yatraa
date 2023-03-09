@@ -13,7 +13,6 @@ class BusStopLocation with ChangeNotifier {
     var response = await Dio().get('$serverUrl/location/busroutes/');
     for (int i = 0; i < response.data.length; i++) {
       _locations.add(response.data[i]);
-      print(response.data[i]);
     }
     notifyListeners();
   }

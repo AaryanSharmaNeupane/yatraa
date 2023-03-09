@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yatraa/screens/passenger_screen.dart';
-// import 'package:yatraa/screens/rate_driver_screen.dart';
+
 import '../helpers/commons.dart';
 import '../helpers/shared_prefs.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
-
-import '../screens/khalti_screen.dart';
 
 Widget reviewRideBottomSheet(
     BuildContext context, String distance, String dropOffTime) {
